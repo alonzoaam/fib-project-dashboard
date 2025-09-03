@@ -1,5 +1,5 @@
 {
-  "name": "fibonacci-project-dashboard",
+  "name": "fib-project-dashboard",
   "version": "1.0.0",
   "description": "Scalable cloud-native dashboard for project communication tracking and analysis",
   "main": "src/dashboard/index.html",
@@ -49,7 +49,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/fibonacci-project-dashboard.git"
+    "url": "https://github.com/alonzoaam/fib-project-dashboard.git"
   },
   "engines": {
     "node": ">=18.0.0",
