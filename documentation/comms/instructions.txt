@@ -1,0 +1,30 @@
+Confidential
+Instructions
+You’re the new project manager at Fibonacci, a human data annotation company. Historically, the team has been at a scale where a handful of people can keep all the necessary client project context in their heads. But now, the team is scaling fast, and things are getting confusing. Client-facing project context is scattered across a variety of comms & artifacts, and no one has a good global picture of what’s going on.
+
+As the new project manager, people ask you questions like:
+
+"What's our current timeline and deliverable date for the Safety Classifier Data project?"
+"Can you tell me the total scope and delivery expectations for each phase of the RLHF Dialogue Data workstream?"
+"I need to allocate resources for the Multimodal SFT Dataset next week. What exactly did we commit to for timing and volume?"
+"Looking at the Agentic Planning Corpus documentation - what were the final volume requirements and timeline?"
+"For the RLHF Safety Evals project, could you summarize which guidelines we're using and our delivery commitments?"
+“For all projects that are currently in flight, what volumes have we committed to?”
+“Which projects is {person X} responsible for?”
+Of course, you can answer these questions individually, but as a project manager, your mandate is to organize information in a way that gives the Fibonacci team a clear line of sight to what they need to know about client-facing projects.
+
+Your task is to:
+
+Using the provided raw comms, demonstrate your solution in action by creating a project tracker in Google Sheets or Docs that centralizes all of the key information in one place
+There’s a lot of content, so if you don’t have time to process all of it, that’s fine
+We want the tracker to be readable / easily scannable / etc. But you don’t need to make it inherently beautiful beyond those functional considerations.
+Build a tracker that would scale to having 100x as many projects / comms / etc as what you’ve been given here.
+It’s ok if this means you’re doing things that feel slightly silly at the toy scale we’ve provided examples for.
+Briefly describe any process/workflow changes you’d institute or other artifacts you’d create to bring clarity to the team, and explain why you think they’d be helpful
+Imagine one of your colleagues wants to build programmatic dashboards, and wants to use your tracker as an input. Format your tracker to be amenable to this.
+Our comms here are intentionally messy, so you can prove that you can lift clarity out of chaos. If something seems off or confusing, just note it as part of your submission (in a real world scenario in which you were organizing this information for Fibonacci, how would you communicate this confusion to the team?).
+
+Notes:
+
+All the URLs in the provided raw comms are fake / placeholders
+Unlike other work on this platform, you’re welcome to use large language models! Just let us know how you used them.

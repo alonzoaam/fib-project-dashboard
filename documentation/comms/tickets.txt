@@ -1,0 +1,15 @@
+Confidential
+TICKET #4851 - Tool Configuration for RLHF Project Priority: High Created: Oct 28, 2024, 10:15a Status: Blocked
+
+[Oct 28, 10:15a] Alex Kumar Need access to preference annotation tool for new RLHF project. 25k examples, 96-hour turnaround time. Tom Martinez from client side waiting on this.
+
+[Oct 28, 2:30p] DevOps Team Looking into it. Current version needs security patch before we can deploy. Which preference collection template are you using?
+
+[Oct 28, 2:45p] Alex Kumar Using standard RLHF template from https://guidelines.client/rlhf/v2
+
+[Oct 29, 9:20a] DevOps Team Security patch delayed due to dependency issues. @Alex Kumar can you test the workaround in staging?
+
+[Oct 29, 4:15p] Alex Kumar Tried workaround - getting OAuth errors. Can we expedite? Client timeline is tight.
+
+[Oct 30, 11:05a] DevOps Team Still working with security team on approval. No ETA yet.
+

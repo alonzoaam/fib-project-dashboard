@@ -1,0 +1,18 @@
+Confidential
+Calendar Invite Title: Safety Classifier Dataset Kickoff Organizer: James Wilson Date: Oct 31, 2024, 2:00p-3:00p Location: Zoom Room 2 Attendees: Sarah Miller [Client], ML Team, Data Quality Team
+
+Description: Kicking off new safety classifier project. Will cover:
+
+Overview of 12k example dataset
+Review data schema and annotation requirements
+Timeline discussion
+Team assignments
+QA process alignment
+Note: This is a new project starting from scratch - please review v3 guidelines before the meeting. Special focus on updated toxicity categories (changed from last quarter).
+
+Pre-reading:
+
+Guidelines: https://guidelines.client/safety/v3
+Dataset: https://data.client/safety-nov
+Please come prepared with questions about annotation edge cases.
+

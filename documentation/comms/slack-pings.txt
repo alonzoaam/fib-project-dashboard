@@ -1,0 +1,124 @@
+Confidential
+From: Maria Santos -> Bill Wong [Client]
+
+Direct Message
+
+Date: Oct 29, 2024, 11:45a
+
+Message: "we can probably do 48h if we prioritize it. it's only 3.5k examples. let me check with the team"
+
+From: Maria Santos
+
+Channel: #project-updates
+
+Date: Oct 29, 2024, 4p
+
+Message: "heads up - client wants Q4 safety evals by nov 1, but with current capacity we need 72h minimum to do this properly 🤷‍♀️"
+
+From: Maria Santos
+
+Channel: #data-labeling
+
+Date: Oct 30, 2024, 11a
+
+Message: "@here quick status update - reviews are about 40% done on the RLHF safety evals, we've caught some interesting edge cases. Following the v1 guidelines."
+
+From: Alex Kumar
+
+Channel: #project-updates
+
+Date: Oct 28, 2024, 4:45p
+
+Message: "Re multimodal SFT project - after checking team capacity and estimation models, told Sarah we can deliver by Nov 15. That gives us enough buffer even with the annotation review cycles."
+
+From: James Wilson
+
+Channel: #hiring
+
+Date: Oct 30, 2024, 11:22a
+
+Message: "Perfect timing! I've got that new safety classifier project starting up (12k examples) and could use the extra hands. @Sam where should I point them for the input data?"
+
+From: Sarah Miller [Client]
+
+Channel: #client-requests-external
+
+Date: Oct 28, 2024, 10:15a
+
+Message: "@Alex Kumar Following up on our chat during last week's AI Summit - excited to kick off the multimodal training data project! We've got 82k examples ready to go. Team really wants this done by Nov 10 since we're pushing for EOY model release. I know supply chain is still finalizing next year's compute budget but that shouldn't affect this."
+
+From: Alex Kumar -> Tom Martinez [Client] Direct Message Date: Oct 30, 2024, 3:18p Message: "Still blocked on our tool deployment. Security team is being extra careful with the preference collection interface. I know we committed to 96h once we start, but can't begin until this is resolved"
+
+From: Bill Wong [Client] -> Maria Santos
+
+Direct Message
+
+Date: Oct 29, 2024, 11:23a
+
+Message: "hey quick q - for the agent planning stuff, do we really need the full 72h turnaround? team is pushing pretty hard for halloween delivery"
+
+From: Recruiting Team
+
+Channel: #hiring
+
+Date: Oct 30, 2024, 11:20a
+
+Message: "Excited to announce we have 2 new ML Engineers starting next week! 🎉"
+
+From: System Alert
+
+Channel: #data-monitoring
+
+Date: Oct 30, 2024, 2:15p
+
+Message: "🔔 Large dataset uploaded to /dialogue3 (91k examples) - RLHF Dialogue Data Batch 3. Tagging @Nina Patel for validation."
+
+From: Sam
+
+Channel: #hiring
+
+Date: Oct 30, 2024, 11:25a
+
+Message: "They can find everything at https://data.client/safety-nov
+
+From: Tom Martinez [Client] -> Alex Kumar Direct Message Date: Oct 30, 2024, 3:15p Message: "hey any update on the preference study? getting pressure from above 😬"
+
+From: Tom Martinez [Client] -> Alex Kumar Direct Message Date: Oct 30, 2024, 3:20p Message: "ugh, ok. keeping our nov 1 target delivery in our internal tracking for now but let me know as soon as you have access"
+
+From: Alex Kumar -> Tom Martinez [Client] Direct Message Date: Oct 30, 2024, 3:21p Message: "Will do. Sorry about this - extremely frustrating on our end too"
+
+From: Nina Patel Channel: #rlhf-projects Date: Oct 30, 2024, 9:15a Message: "Quick flag - reviewing RLHF dialogue batch 2 (44k). @Lisa Park we're seeing some new interaction patterns that weren't in batch 1's examples. Can you confirm if this is intended? Particularly around multi-turn reasoning."
+
+From: Lisa Park [Client]
+
+Channel: #rlhf-projects
+
+Date: Oct 30, 2024, 9:45a
+
+Message: "Yes! These are intentionally more complex. Batch 3 will build on this further - sending those 91k examples later today. Same Dec timeline for both batches."
+
+From: Nina Patel
+
+Channel: #rlhf-projects
+
+Date: Oct 30, 2024, 9:47a
+
+Message: "Got it - good to know batch 3 will expand on this. Both currently blocked until we align on these new patterns. Will need example review sessions for each batch since they're testing different interaction types."
+
+From: Nina Patel
+
+Channel: #data-monitoring
+
+Date: Oct 30, 2024, 2:20p
+
+Message: "Thanks - will review after we unblock batch 2. Same evaluation criteria but need to account for the new complexity patterns Lisa mentioned."
+
+From: John Chen [Client]
+
+Channel: #client-requests-external
+
+Date: Oct 29, 2024, 2p
+
+Message: "Hey @Maria Santos can you help with a new RLHF safety eval dataset? About 45k examples, pretty standard stuff. Guidelines are https://guidelines.client/safety/v2"
+
+

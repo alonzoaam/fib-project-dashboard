@@ -1,0 +1,45 @@
+Confidential
+From: Daily Stand-up Notes Channel: #team-standups Date: Oct 30, 2024, 10:00a Message: ``` Team Updates - Oct 30
+
+Completed:
+
+Q3 metrics review
+Image dataset delivery
+New hire onboarding docs
+In Progress:
+
+ML pipeline optimization
+Alex K: RLHF preference project (25k examples, blocked on tooling)
+Cloud migration planning
+Blockers:
+
+Security approval for preference tool
+GPU cluster maintenance
+Client VPN issues
+Notes:
+
+Remember to log hours by EOD
+Team lunch tomorrow canceled
+Data available at https://data.client/rlhf-pref whenever tools are ready```
+Meeting Minutes: Data Labeling Team Sync Date: Oct 30, 2024, 3:00p Attendees: Alex K, Sarah M, Data Team (8 others) Location: Zoom Room 3
+
+Agenda:
+
+Weekend on-call rotation
+New label verification tool demo
+Project updates
+Notes:
+
+Jane is taking Nov 4-5 off for wedding
+New tool looks promising but needs security audit
+Multimodal SFT project (82k examples) blocked - waiting on image annotation guidelines from client side
+Pizza party next Friday to celebrate Q3 goals
+Remember to update your Zoom backgrounds for Halloween!
+Action Items:
+
+Tom: Schedule security audit
+Sarah: Send annotation guidelines
+All: Vote on pizza toppings in #random
+Alex: Update capacity planning doc
+Next meeting: Nov 6, 3:00p
+

@@ -1,0 +1,163 @@
+Confidential
+From: Lisa Park [Client]
+
+To: Nina Patel, Data Operations Team
+
+Subject: RLHF Dialogue Data - Batch 2 Ready
+
+Date: Oct 29, 2024, 2:30p
+
+Hi Nina,
+
+Green light for the second batch of dialogue data! Based on what we learned from batch 1, we've refined the examples but keeping same basic parameters:
+
+44M examples this time (smaller than batch 1 to test new pattern types)
+
+Same guidelines: https://guidelines.client/rlhf/v1
+
+Data drop: https://data.client/dialogue3
+
+Looking at Dec 10 delivery, Dec 15 latest
+
+Once you've had a chance to review these examples, I'll send batch 3 which incorporates more complex interaction patterns (91k examples).
+
+Thanks!
+
+Lisa
+
+From: Sarah Miller [Client] To: Data Strategy Team, ML Infrastructure, James Wilson Subject: Weekly Updates + Upcoming Projects + Team Lunch Poll! Date: Oct 29, 2024, 9:45a
+
+Hi everyone!
+
+Lots to cover today! First, don't forget we're doing team lunch next week - please fill out the cuisine preference poll in #random! I'm personally voting Thai but no pressure 😊
+
+Key Updates:
+
+Infrastructure
+New GPU cluster deployment delayed till Dec
+Bob's dog had puppies! Pictures in #pets
+Cloud credits running low, finance reviewing
+Upcoming Projects & Pipeline Looking at a pretty packed November! Most urgent:
+Safety classifier dataset project (12k examples) - James, I know you've been tagged for this. We can be a bit flexible on timing - ideally by Nov 2, but internal deadline isn't till 11/5/23. Guidelines at https://guidelines.client/safety/v3. Haven't kicked this off yet but marking it as high priority for next sprint.
+Sentiment analysis backfill needed for APAC team
+Q4 model evaluations starting next week
+Customer satisfaction dataset needs cleaning (low priority)
+Team Updates
+Alice is back from parental leave next week
+New coffee machine training session Thursday
+Remember to submit your Halloween costume photos
+Still need volunteers for the office plant watering rotation
+Miscellaneous
+Mandatory security training due Nov 15
+Office closed Nov 23-24 for holidays
+Has anyone seen my blue water bottle?
+Let me know if you have any questions!
+
+Best, Sarah
+
+From: Bill Wong [Client] To: Maria Santos, Planning Team Date: Oct 29, 2024, 3:15p Subject: Quick question about planning corpus CC: Data Strategy
+
+Hi Maria,
+
+Just wanted to check if you saw my earlier note about the timing? Also, random thought - have you tried that new sushi place downtown?
+
+Thanks! Bill
+
+P.S. The data is at https://data.client/planning22 if you need it again.
+
+From: Jason Kim To: ML Research, Data Strategy Subject: Re: RLHF Architecture Thoughts Date: Oct 30, 2024, 10:15a
+
+Thanks everyone for the feedback on different reward modeling approaches. Wanted to consolidate some thoughts here as we think about standardization. We've been seeing really interesting results from the comparative studies, particularly around the question of direct preference learning versus calibrated scoring approaches. The baseline methodology we started with last quarter – where we relied heavily on pairwise comparisons with relatively straightforward win/loss/tie annotations – has some clear advantages in terms of annotation throughput and quality control, but we're hitting some scaling limitations especially when we try to capture more nuanced preferences or handle multi-turn interactions. The new calibrated scoring framework that the APAC team has been experimenting with shows promise, especially in terms of handling edge cases and capturing preference intensity, but there are some concerns about annotator calibration drift over time and the need for more extensive training. We're seeing about 15% higher upfront costs with the calibrated approach but potentially better scaling characteristics once annotators are fully ramped. One interesting pattern we've noticed is that annotator consistency actually improves over time with the calibrated approach, contrary to our initial drift concerns, possibly because they're developing a more nuanced understanding of the quality spectrum. The question of hybrid approaches is also interesting – we could potentially use calibrated scores for initial data collection and then validate key examples with pairwise comparisons, or vice versa. The compute costs for reward model training don't differ substantially between approaches as far as we can tell, though the calibrated approach gives us more flexibility in terms of sampling and weighting examples during training. There's also the question of how this interacts with the critique collection we've been doing – we're seeing some evidence that detailed critiques help maintain annotator engagement and quality even in pure pairwise settings. We should probably standardize on collection of minimal critique data regardless of which preference learning approach we go with. Initial results from the structured critique prompts are promising but we need more time to validate the approach at scale. The other key consideration is how this all integrates with our existing model evaluation frameworks – pairwise comparisons align more naturally with our current benchmarks, but we might want to rethink some of the fundamental evaluation approaches anyway. I've attached some preliminary numbers on annotator throughput and quality metrics across different approaches, but please note these are from relatively small scale tests and we'd need broader validation before making any firm conclusions. Would love to get everyone's thoughts, particularly from teams who have tried different variants of these approaches. We should probably schedule a longer working session on this soon.
+
+-Jason
+
+P.S. If anyone has the original data from the annotator calibration studies from summer, could you share? Some of those results would be really relevant to revisiting now.
+
+From: Eric Chen To: Data Operations Team Subject: Quick heads up - labeling infrastructure maintenance Date: Oct 30, 2024, 11:45a
+
+Hi team,
+
+A few infrastructure updates to be aware of:
+
+First off, great work hitting 97% completion rate last week! Unfortunately we need to do some maintenance that might slow us down a bit this week:
+
+Main labeling cluster going down for updates tonight 8pm-11pm EST
+Backup cluster available but at reduced capacity (use flag --backup-only when submitting jobs)
+Anyone who hasn't upgraded their API key needs to do so by Friday
+VPN access might be spotty during maintenance window
+Also! If you're using the new validation pipeline, you might notice some extra latency. We're working with cloud provider to optimize but for now just add an extra 5min buffer to your validation runs.
+
+Quick reminders:
+
+Please log your hours in the new system (old system retiring next week)
+Still collecting RSVPs for next month's offsite
+New #infra-status channel is now the official place for maintenance updates
+If you're in the office, facilities asked us to clear out the old monitors from the storage room
+Let me know if you run into any issues during the maintenance window!
+
+-Eric
+
+P.S. Found a water bottle in the 4th floor kitchen - if it's yours ping me in #random
+
+From: Maya Thompson To: Data Strategy, ML Leadership Subject: Data Collection Strategy - Human Feedback Streams Date: Oct 30, 2024, 1:30p
+
+Team,
+
+Following up on yesterday's strategy session about scaling our human feedback collection. Key points we aligned on:
+
+Current State:
+
+Average throughput: ~50k examples/week
+Current annotator pool: 250 active
+Quality metrics holding steady at 94%
+Cost per example trending down (-12% MoM)
+Growth Targets:
+
+Need 2x capacity by Q2 2025
+Focus on complex reasoning tasks
+Particular gaps in multi-turn dialogue
+Priority for collecting counterfactual examples
+Next Steps:
+
+Expanding annotator qualification process
+Testing new compensation structure next month
+Rolling out upgraded quality monitoring
+Planning gradual transition to new feedback collection UI
+Open Questions:
+
+Optimal batch size for complex tasks
+Trade-off between speed and validation depth
+Integration with new ML training pipeline
+Geographic expansion of annotator pool
+Reminder: if your team needs dedicated annotation capacity for Q1, get requests in by Nov 15.
+
+Let me know if you need clarification on anything.
+
+Best, Maya
+
+From: Alex Kumar alex.k@fibonacci.com To: Sarah Miller, ML Team Date: Oct 28, 2024, 2:30p Subject: Multimodal SFT Dataset Project Kickoff CC: Legal Team, Cloud Infrastructure
+
+Hi all,
+
+Thanks for a great kickoff call. Key points from our discussion:
+
+GENERAL UPDATES:
+
+New coffee machine being installed in break room next Tuesday
+Remember to fill out your end-of-year reviews by Dec 1
+Welcome to Jim from the new DevOps team!
+PROJECT SPECIFICS:
+
+Using standard MM guidelines v1 (https://guidelines.client/mm/v1)
+Data will be stored at https://data.client/mm-batch3
+Sarah to provide image annotation rubric by EOD tomorrow
+Running this parallel with the APAC team's synthetic data generation project
+UPCOMING MEETINGS:
+
+Weekly sync: Thursdays 11am EST
+Monthly all-hands: Nov 15
+Holiday party planning committee: TBD
+Let me know if I missed anything!
+
+Best, Alex
+

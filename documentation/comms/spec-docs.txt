@@ -1,0 +1,230 @@
+Confidential
+Agentic Planning Corpus - Technical Specification v2.4
+Last updated: Oct 28, 2024
+
+Document Status: INTERNAL - DO NOT SHARE EXTERNALLY
+
+Author: Bill Wong
+
+Reviewers: ML Strategy Team, Data Quality, Legal
+
+Executive Summary The rise of agentic AI systems necessitates robust planning capabilities across multiple domains and time horizons. This document outlines the comprehensive requirements for creating a high-quality planning corpus that will enable next-generation AI systems to develop sophisticated planning strategies while maintaining appropriate safety guardrails. The corpus will serve as a foundation for training models that can decompose complex tasks, manage dependencies, and adapt to changing conditions.
+Background and Context
+2.1 Market Analysis
+
+The agentic AI market has shown significant growth in Q3 2024:
+
+47% increase in demand for planning-capable systems
+3.2x growth in deployment of agentic AI in enterprise settings
+$4.2B projected market size by 2025
+Key competitors have released 5 major updates in past 6 months See Appendix A for detailed market research report.
+2.2 Technical Context and Historical Background
+
+Previous iterations of planning corpora have demonstrated several limitations:
+
+V1.0 (2023 Q2): 78% accuracy but temporal consistency issues
+V1.5 (2023 Q4): Improved to 82% but limited scope
+V2.0 (2024 Q1): Added multi-step planning but suffered from goal drift
+V2.1 (2024 Q2): Introduced safety constraints, reduced effectiveness
+V2.2 (2024 Q3): Balanced safety and effectiveness, still needs improvement
+V2.3 (2024 Q3): Rejected due to data quality issues
+2.3 Strategic Alignment
+
+This project aligns with corporate objectives:
+
+Innovation leadership in AI safety
+Market expansion in enterprise AI
+Technical capability development
+Revenue growth targets for Q4 2024 and beyond
+Dataset Requirements and Specifications
+3.1 Volume and Scale
+
+Initial scope: 3,500 examples [Note from PM meeting 10/27: Reduced from original 5k after capacity discussion] [Note from Quality team: Possible concerns about statistical significance] [Note from Bill: Approved reduction based on timeline constraints]
+Format: JSON with nested attributes
+Quality threshold: 98% accuracy required
+Validation sample size: 15% of total corpus
+3.2 Timeline and Delivery
+
+Client request date: October 31, 2024
+[OUTDATED] Initial timeline estimate: 96 hours turnaround
+[UPDATED] Committed timeline: 48-hour turnaround time
+[DISCUSSION] Team capacity analysis suggests 72h optimal
+[NOTE FROM LEGAL] All deliverables require compliance verification
+3.3 Quality Metrics
+
+Inter-annotator agreement: >0.85 Cohen's kappa
+Temporal consistency score: >0.92
+Safety constraint adherence: 100%
+Goal alignment accuracy: >95%
+Edge case coverage: >80%
+Technical Specifications
+4.1 Data Schema
+
+{
+
+"planning_sequence": {
+
+"steps": string[],
+
+"dependencies": array[],
+
+"timeframes": object,
+
+"contingencies": array[]
+
+},
+
+"constraints": {
+
+"physical": object[],
+
+"temporal": object[],
+
+"resource": object[],
+
+"safety": object[]
+
+},
+
+"success_metrics": {
+
+"completion": float,
+
+"efficiency": float,
+
+"safety_score": float
+
+},
+
+"metadata": {
+
+"version": string,
+
+"timestamp": string,
+
+"validator": string
+
+}
+
+}
+
+4.2 Validation Requirements
+
+Detailed validation protocol requires:
+
+Primary validation by domain experts
+Secondary safety review
+Temporal consistency check
+Resource constraint verification
+Goal alignment assessment
+Edge case analysis
+Safety boundary testing
+4.3 Safety Constraints
+
+All examples must adhere to:
+
+No physical harm scenarios
+Resource feasibility
+Temporal logic consistency
+Ethical boundary respect
+Legal compliance
+Safety-first planning principles
+Implementation Guidelines
+5.1 Data Collection Process
+
+Source verification
+Quality checks at ingestion
+Real-time validation
+Automated consistency checking
+Manual review triggers
+Exception handling protocols
+5.2 Annotation Requirements
+
+Dual annotator system
+Explicit safety checking
+Temporal verification
+Resource validation
+Goal alignment confirmation
+5.3 Review Process
+
+Three-tier review system
+Safety board approval
+Technical validation
+Client checkpoint reviews
+Final quality assurance
+Technical Infrastructure
+6.1 Storage and Access
+
+Data storage location: https://data.client/planning22
+Access control: Role-based
+Backup frequency: Real-time
+Retention policy: 90 days
+6.2 Processing Requirements
+
+Distributed processing capability
+Real-time validation
+Automated quality checks
+Performance monitoring
+Compliance and Security
+7.1 Security Requirements
+
+End-to-end encryption
+Access logging
+Change tracking
+Version control
+Audit trail maintenance
+7.2 Compliance Standards
+
+ISO 27001 compliance
+GDPR considerations
+Industry standards
+Internal policies
+Client requirements
+Project Status and Notes
+8.1 Current Status
+
+Project phase: Complete
+Validation status: Passed
+Quality metrics: Met
+Timeline: Achieved
+Final validation completed Oct 30
+8.2 Outstanding Items
+
+Post-delivery analysis pending
+Quality team suggestions logged
+Future improvement notes captured
+8.3 Additional Notes and Comments
+
+Remember to use guidelines from shared drive (current link unavailable)
+Sarah from ML team suggests 72h timeline would have been better for validation
+Project completion logged in tracking system
+Volume adjustment approved despite statistical concerns
+Quality metrics achieved but with noted reservations
+Future Considerations
+9.1 Scaling Plans
+
+Expansion to 10k examples planned for Q1 2025
+Additional language support upcoming
+New constraint types under development
+Enhanced validation protocols in design
+9.2 Integration Requirements
+
+API development planned
+Real-time validation integration
+Automated quality checking
+Performance monitoring systems
+Appendices
+Appendix A: Market Research Details
+
+Revision History:
+
+v2.4 - Oct 28, 2024: Updated timeline and volume specifications
+
+v2.3 - Oct 25, 2024: Added compliance requirements
+
+v2.2 - Oct 20, 2024: Initial draft
+
+v2.1 - Oct 15, 2024: Preliminary outline
+
+v2.0 - Oct 10, 2024: Document created
+
