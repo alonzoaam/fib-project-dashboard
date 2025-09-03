@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "fibonacci-project-dashboard",
+  "name": "fib-project-dashboard",
   "builds": [
     {
       "src": "src/dashboard/**",
