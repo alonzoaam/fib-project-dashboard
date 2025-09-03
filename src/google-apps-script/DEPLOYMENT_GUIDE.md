@@ -1,7 +1,17 @@
-# Google Apps Script Deployment Guide
+# 🚀 Google Apps Script Deployment Guide
+
+**Complete setup instructions for the Fibonacci Project Dashboard automation system**
 
 ## Overview
-This enhanced Google Apps Script system now automatically builds a knowledge base from your Google Drive files and uploads configuration data directly to your Google Sheets.
+
+This comprehensive Google Apps Script system transforms scattered project communications into centralized, actionable intelligence. The system automatically parses communications from multiple sources, identifies projects and people, and generates structured data for both Google Sheets and the web dashboard.
+
+**Key Capabilities:**
+- 🤖 **Automated Communication Parsing** - Processes 6+ different communication formats
+- 📊 **Dynamic Project Recognition** - Groups related projects across naming variations
+- 👥 **People & Resource Tracking** - Identifies team members, clients, and roles
+- 🔍 **Intelligent Data Extraction** - Finds timelines, volumes, action items, and links
+- 📈 **Real-time Dashboard** - Powers modern web interface with AI assistant
 
 ## Files to Deploy
 

@@ -60,15 +60,37 @@ class GoogleAppsScriptKnowledgeBuilder {
       const files = this.readFilesFromDrive(folderName);
       console.log(`📁 Loaded ${Object.keys(files).length} files from Drive`);
       
-      // 2. Process each file
-      Object.entries(files).forEach(([fileName, content]) => {
-        this.processFile(content, fileName);
-      });
+      // 2. Use the SimpleCommunicationParser to properly parse communications
+      const parser = new SimpleCommunicationParser();
+      const parsedData = parser.parseAllFiles(files);
       
-      // 3. Generate search index and group projects
+      // 3. Convert parsed communications to knowledge base format
+      this.knowledgeBase.communications = parsedData.communications.map((comm, index) => ({
+        id: comm.communication_id || `comm_${index}`,
+        date: comm.date || 'N/A',
+        source: comm.source || 'unknown',
+        line: comm.originalIndex || index,
+        content: comm.content || '',
+        from: comm.from || '',
+        to: comm.to || (Array.isArray(comm.recipients) ? comm.recipients.join(', ') : ''),
+        projects: comm.projects_mentioned || [],
+        people: this.extractPeopleFromComm(comm),
+        actionItems: comm.action_items || [],
+        links: comm.links || [],
+        volumes: comm.volume_numbers || [],
+        timelines: comm.timelines_mentioned || [],
+        priority: comm.priority_level || 'normal',
+        type: this.detectCommunicationType(comm)
+      }));
+      
+      // 4. Build projects and people from parsed data
+      this.buildProjectsFromParsed(parsedData);
+      this.buildPeopleFromParsed(parsedData);
+      
+      // 5. Generate search index and group projects
       this.generateSearchIndex();
       
-      // 4. Update metadata
+      // 6. Update metadata
       this.knowledgeBase.metadata.totalCommunications = this.knowledgeBase.communications.length;
       this.knowledgeBase.metadata.totalProjects = this.knowledgeBase.projects.size;
       this.knowledgeBase.metadata.lastUpdated = new Date().toISOString();
@@ -170,6 +192,88 @@ class GoogleAppsScriptKnowledgeBuilder {
         entry.projects.forEach(project => {
           this.knowledgeBase.people.get(person).projects.add(project);
         });
+      });
+    });
+  }
+  
+  // Helper methods for the updated knowledge base building
+  extractPeopleFromComm(comm) {
+    const people = [];
+    if (comm.from) people.push(comm.from);
+    if (comm.to) {
+      if (Array.isArray(comm.to)) {
+        people.push(...comm.to);
+      } else if (typeof comm.to === 'string') {
+        people.push(...comm.to.split(',').map(p => p.trim()));
+      }
+    }
+    if (comm.recipients && Array.isArray(comm.recipients)) {
+      people.push(...comm.recipients);
+    }
+    return [...new Set(people.filter(p => p && p.trim() && !p.includes('@')))];
+  }
+  
+  detectCommunicationType(comm) {
+    if (comm.messageContent || comm.channel) return 'message';
+    if (comm.subject) return 'email';
+    if (comm.meeting) return 'meeting';
+    if (comm.eventTitle) return 'calendar';
+    if (comm.ticketNumber) return 'ticket';
+    if (comm.documentTitle) return 'document';
+    return comm.source || 'unknown';
+  }
+  
+  buildProjectsFromParsed(parsedData) {
+    parsedData.projects.forEach(projectName => {
+      if (!this.knowledgeBase.projects.has(projectName)) {
+        this.knowledgeBase.projects.set(projectName, { 
+          mentions: 0, 
+          communications: [], 
+          people: new Set(),
+          timeline: null,
+          volume: null
+        });
+      }
+    });
+    
+    // Add project mentions from communications
+    this.knowledgeBase.communications.forEach(comm => {
+      comm.projects.forEach(project => {
+        if (this.knowledgeBase.projects.has(project)) {
+          const projectData = this.knowledgeBase.projects.get(project);
+          projectData.mentions++;
+          projectData.communications.push(comm.id);
+          comm.people.forEach(person => projectData.people.add(person));
+        }
+      });
+    });
+  }
+  
+  buildPeopleFromParsed(parsedData) {
+    parsedData.people.forEach(personName => {
+      if (!this.knowledgeBase.people.has(personName)) {
+        this.knowledgeBase.people.set(personName, { 
+          mentions: 0, 
+          projects: new Set(), 
+          roles: new Set(),
+          isClient: false
+        });
+      }
+    });
+    
+    // Add people mentions from communications
+    this.knowledgeBase.communications.forEach(comm => {
+      comm.people.forEach(person => {
+        if (this.knowledgeBase.people.has(person)) {
+          const personData = this.knowledgeBase.people.get(person);
+          personData.mentions++;
+          comm.projects.forEach(project => personData.projects.add(project));
+          
+          // Detect if person is a client based on communication patterns
+          if (comm.content && comm.content.toLowerCase().includes('[client]')) {
+            personData.isClient = true;
+          }
+        }
       });
     });
   }
