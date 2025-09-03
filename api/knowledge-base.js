@@ -194,7 +194,9 @@ async function fetchFromCloudStorage() {
     return JSON.parse(process.env.KNOWLEDGE_BASE_JSON);
   }
   
-  return null;
+  // Option 4: Return sample data for testing (fallback)
+  console.log('⚠️ No storage configured, returning sample data');
+  return getSampleKnowledgeBase();
 }
 
 async function fetchFromGoogleCloudStorage() {

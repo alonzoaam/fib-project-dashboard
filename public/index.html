@@ -660,7 +660,8 @@
         </div>
     </div>
 
-    <script type="module" src="../api/knowledge_base.js"></script>
+    <script src="knowledge_base.js"></script>
+    <script src="api-client.js"></script>
     <script>
         // Global data storage
         let knowledgeBaseData = null;
@@ -668,16 +669,57 @@
         let filteredCommunications = [];
 
         // Initialize the dashboard
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             if (window.KNOWLEDGE_BASE) {
                 knowledgeBaseData = window.KNOWLEDGE_BASE;
-                console.log('📊 Knowledge base loaded:', knowledgeBaseData);
+                console.log('📊 Knowledge base loaded from static file:', knowledgeBaseData);
                 loadData();
             } else {
-                console.error('❌ Knowledge base not found');
-                document.getElementById('connectionStatus').textContent = 'Knowledge Base Error';
+                console.log('📡 Static knowledge base not found, trying API...');
+                
+                // Try loading from API
+                try {
+                    const apiClient = new KnowledgeBaseClient();
+                    knowledgeBaseData = await apiClient.loadKnowledgeBase();
+                    console.log('📊 Knowledge base loaded from API:', knowledgeBaseData);
+                    loadData();
+                } catch (error) {
+                    console.error('❌ Knowledge base not found - neither static file nor API available');
+                    document.getElementById('connectionStatus').textContent = 'Waiting for data - Run Google Apps Script or check API';
+                    
+                    // Load placeholder data as fallback
+                    loadPlaceholderData();
+                }
             }
         });
+
+        // Load placeholder data as fallback
+        function loadPlaceholderData() {
+            console.log('📋 Loading placeholder data...');
+            knowledgeBaseData = {
+                projects: {},
+                people: {},
+                keywords: {},
+                communications: [],
+                projectGroups: {},
+                initialConfig: {
+                    projectPatterns: [],
+                    peoplePatterns: [],
+                    keywordPatterns: [],
+                    clientPatterns: [],
+                    statusKeywords: []
+                },
+                metadata: {
+                    buildDate: null,
+                    totalProjects: 0,
+                    totalCommunications: 0,
+                    lastUpdated: null
+                }
+            };
+            
+            document.getElementById('connectionStatus').textContent = 'Offline Mode';
+            loadData();
+        }
 
         // Load all data
         function loadData() {
