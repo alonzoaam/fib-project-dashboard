@@ -13,7 +13,7 @@ const CONFIG = {
     PRIMARY: 'https://fib-project-dashboard.vercel.app/api/knowledge-base',
     BACKUP: 'https://script.google.com/macros/s/prj_Zk0kK8EcpAAfJ1YHym5dnLWfbPTD/exec'
   },
-  API_SECRET_KEY: 'your-secure-api-key-here', // Change this in production
+  API_SECRET_KEY: 'fibonacci-secret-2025', // Change this in production
   ENABLE_DRIVE_BACKUP: false, // Set to true if you want to keep drive backups
   
   // Sheet names for all tabs
