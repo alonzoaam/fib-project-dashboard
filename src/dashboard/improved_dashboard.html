@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Project Communications Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .connection-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .main-tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .main-tab {
+            flex: 1;
+            padding: 15px 25px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 1em;
+        }
+        
+        .main-tab.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Communications Filter Bar */
+        .filter-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .filter-controls {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-dropdown {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .filter-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .clear-filters {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .clear-filters:hover {
+            background: #c82333;
+        }
+
+        /* Content Container */
+        .content-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-header h3 {
+            margin: 0;
+            color: #495057;
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #5a6fd8;
+        }
+
+        /* Project Overview Styles */
+        .projects-overview {
+            padding: 20px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .project-item {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .project-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .project-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            transition: background 0.3s ease;
+        }
+
+        .project-header:hover {
+            background: #e9ecef;
+        }
+
+        .project-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .project-variants {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .stat-badge {
+            background: #e9ecef;
+            color: #495057;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+        }
+
+        .project-details {
+            display: none;
+            padding: 0 20px 20px 20px;
+            background: white;
+        }
+
+        .project-details.show {
+            display: block;
+        }
+
+        /* Data Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+
+        .data-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .data-table tbody tr {
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Expandable Row Styles */
+        .row-expanded {
+            background: #f8f9fa !important;
+        }
+
+        .expanded-content {
+            display: none;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            margin: 10px 0;
+        }
+
+        .expanded-content.show {
+            display: block;
+        }
+
+        .expanded-field {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .expanded-field:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        .field-content {
+            color: #666;
+            line-height: 1.5;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        /* Content Preview Styles */
+        .content-preview {
+            max-width: 300px;
+            max-height: 100px;
+            overflow: hidden;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            font-size: 0.9em;
+            line-height: 1.4;
+            color: #666;
+        }
+
+        .content-preview.truncated::after {
+            content: "... (click to expand)";
+            color: #667eea;
+            font-style: italic;
+        }
+
+        /* Loading and Error States */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px;
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: #667eea;
+            color: white;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: #f1f3f4;
+            color: #333;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-send {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .chat-send:hover {
+            background: #5a6fd8;
+        }
+
+        .chat-send:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .filter-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-tabs {
+                flex-direction: column;
+            }
+            
+            .main-tab {
+                margin: 2px 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Fibonacci Project Dashboard</h1>
+            <p>Comprehensive project tracking with intelligent insights</p>
+            <div class="connection-status" id="connectionStatus">Loading...</div>
+        </div>
+        
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalProjects">-</div>
+                <div class="stat-label">Project Groups</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalPeople">-</div>
+                <div class="stat-label">Team Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalComms">-</div>
+                <div class="stat-label">Communications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="lastUpdate">-</div>
+                <div class="stat-label">Last Updated</div>
+            </div>
+        </div>
+        
+        <div class="main-tabs">
+            <button class="main-tab active" onclick="showMainTab('projects')">📋 Project Overview</button>
+            <button class="main-tab" onclick="showMainTab('people')">👥 People & Resources</button>
+            <button class="main-tab" onclick="showMainTab('communications')">💬 Communications</button>
+            <button class="main-tab" onclick="showMainTab('chat')">🤖 AI Assistant</button>
+        </div>
+
+        <!-- Project Overview Tab -->
+        <div id="projects" class="tab-content active">
+            <div class="content-container">
+                <div class="content-header">
+                    <h3>📋 Project Overview</h3>
+                    <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
+                </div>
+                <div class="projects-overview" id="projectsContainer">
+                    <div class="loading">Loading project data...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- People & Resources Tab -->
+        <div id="people" class="tab-content">
+            <div class="content-container">
+                <div class="content-header">
+                    <h3>👥 People & Resources</h3>
+                    <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
+                </div>
+                <div style="padding: 20px;">
+                    <table class="data-table" id="peopleTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mentions</th>
+                                <th>Projects</th>
+                                <th>Roles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="4" class="loading">Loading people data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communications Tab -->
+        <div id="communications" class="tab-content">
+            <div class="filter-bar">
+                <div class="filter-controls">
+                    <input type="text" class="search-input" id="commSearch" placeholder="Search communications, people, projects..." oninput="filterCommunications()">
+                    <select class="filter-dropdown" id="sourceFilter" onchange="filterCommunications()">
+                        <option value="">All Sources</option>
+                        <option value="slack">Slack</option>
+                        <option value="email">Email</option>
+                        <option value="meeting">Meetings</option>
+                        <option value="calendar">Calendar</option>
+                        <option value="ticket">Tickets</option>
+                        <option value="spec">Specifications</option>
+                    </select>
+                    <select class="filter-dropdown" id="projectFilter" onchange="filterCommunications()">
+                        <option value="">All Projects</option>
+                    </select>
+                    <button class="clear-filters" onclick="clearFilters()">Clear Filters</button>
+                </div>
+                <div id="activeFilters" style="margin-top: 10px;"></div>
+            </div>
+            
+            <div class="content-container">
+                <div class="content-header">
+                    <h3>💬 Communications</h3>
+                    <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
+                </div>
+                <div style="padding: 20px; max-height: 600px; overflow-y: auto;">
+                    <table class="data-table" id="communicationsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Source</th>
+                                <th>Line</th>
+                                <th>Content</th>
+                                <th>Projects</th>
+                                <th>People</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="6" class="loading">Loading communications...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant Tab -->
+        <div id="chat" class="tab-content">
+            <div class="content-container">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h3>🤖 AI Project Assistant</h3>
+                        <p>Ask questions about your projects, communications, and team</p>
+                    </div>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message assistant">
+                            Hello! I'm your AI project assistant. I can help you understand your project communications, track progress, and answer questions about your team's work. Try asking me things like:
+                            <br><br>
+                            • "How many projects are we tracking?"<br>
+                            • "What's the status of the RLHF projects?"<br>
+                            • "Who is working on Safety Classifier?"<br>
+                            • "Show me recent communications about Q4 evaluations"
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything about your projects..." onkeypress="handleChatKeyPress(event)">
+                        <button class="chat-send" id="chatSend" onclick="sendChatMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="knowledge_base.js"></script>
+    <script>
+        // Global data storage
+        let knowledgeBaseData = null;
+        let allCommunications = [];
+        let filteredCommunications = [];
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.KNOWLEDGE_BASE) {
+                knowledgeBaseData = window.KNOWLEDGE_BASE;
+                console.log('📊 Knowledge base loaded:', knowledgeBaseData);
+                loadData();
+            } else {
+                console.error('❌ Knowledge base not found');
+                document.getElementById('connectionStatus').textContent = 'Knowledge Base Error';
+            }
+        });
+
+        // Load all data
+        function loadData() {
+            if (!knowledgeBaseData) return;
+
+            document.getElementById('connectionStatus').textContent = 'Connected';
+            
+            // Update stats
+            updateStats();
+            
+            // Load different sections
+            loadProjectsOverview();
+            loadPeopleData();
+            loadCommunications();
+            
+            console.log('✅ Dashboard loaded successfully');
+        }
+
+        // Update dashboard stats
+        function updateStats() {
+            document.getElementById('totalProjects').textContent = Object.keys(knowledgeBaseData.projectGroups).length;
+            document.getElementById('totalPeople').textContent = Object.keys(knowledgeBaseData.people).length;
+            document.getElementById('totalComms').textContent = knowledgeBaseData.communications.length;
+            document.getElementById('lastUpdate').textContent = new Date(knowledgeBaseData.metadata.lastUpdated).toLocaleDateString();
+        }
+
+        // Load projects overview with expandable content
+        function loadProjectsOverview() {
+            const container = document.getElementById('projectsContainer');
+            const projectGroups = knowledgeBaseData.projectGroups;
+
+            if (!projectGroups || Object.keys(projectGroups).length === 0) {
+                container.innerHTML = '<div class="error">No project data available</div>';
+                return;
+            }
+
+            let html = '';
+            Object.entries(projectGroups).forEach(([groupName, groupData]) => {
+                html += `
+                    <div class="project-item">
+                        <div class="project-header" onclick="toggleProject('${groupName}')">
+                            <div>
+                                <div class="project-name">${groupName}</div>
+                                <div class="project-variants">
+                                    ${groupData.variants.length} variant${groupData.variants.length !== 1 ? 's' : ''}: 
+                                    ${groupData.variants.join(', ')}
+                                </div>
+                            </div>
+                            <div class="project-stats">
+                                <span class="stat-badge">
+                                    ${groupData.totalMentions} mention${groupData.totalMentions !== 1 ? 's' : ''}
+                                </span>
+                                <span class="expand-icon" id="icon-${groupName}">▼</span>
+                            </div>
+                        </div>
+                        <div class="project-details" id="details-${groupName}">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Source</th>
+                                        <th>Line</th>
+                                        <th>Variant</th>
+                                        <th>Content</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${groupData.communications.map((comm, index) => `
+                                        <tr onclick="toggleRowExpansion(this, ${JSON.stringify(comm).replace(/"/g, '&quot;')})">
+                                            <td>${comm.source}</td>
+                                            <td>${comm.line}</td>
+                                            <td><span class="stat-badge">${comm.variant}</span></td>
+                                            <td><div class="content-preview truncated">${comm.content}</div></td>
+                                        </tr>
+                                        <tr class="expanded-content-row" style="display: none;">
+                                            <td colspan="4">
+                                                <div class="expanded-content">
+                                                    <div class="expanded-field">
+                                                        <div class="field-label">Source</div>
+                                                        <div class="field-content">${comm.source}</div>
+                                                    </div>
+                                                    <div class="expanded-field">
+                                                        <div class="field-label">Line Number</div>
+                                                        <div class="field-content">${comm.line}</div>
+                                                    </div>
+                                                    <div class="expanded-field">
+                                                        <div class="field-label">Project Variant</div>
+                                                        <div class="field-content">${comm.variant}</div>
+                                                    </div>
+                                                    <div class="expanded-field">
+                                                        <div class="field-label">Full Content</div>
+                                                        <div class="field-content">${comm.content}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Load people data
+        function loadPeopleData() {
+            const tbody = document.querySelector('#peopleTable tbody');
+            const people = knowledgeBaseData.people;
+
+            if (!people || Object.keys(people).length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="error">No people data available</td></tr>';
+                return;
+            }
+
+            let html = '';
+            Object.entries(people).forEach(([name, personData]) => {
+                html += `
+                    <tr onclick="toggleRowExpansion(this, ${JSON.stringify(personData).replace(/"/g, '&quot;')})">
+                        <td>${name}</td>
+                        <td>${personData.mentions || 0}</td>
+                        <td><div class="content-preview truncated">${personData.projects ? personData.projects.join(', ') : ''}</div></td>
+                        <td><div class="content-preview truncated">${personData.roles ? personData.roles.join(', ') : ''}</div></td>
+                    </tr>
+                    <tr class="expanded-content-row" style="display: none;">
+                        <td colspan="4">
+                            <div class="expanded-content">
+                                <div class="expanded-field">
+                                    <div class="field-label">Name</div>
+                                    <div class="field-content">${name}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">Total Mentions</div>
+                                    <div class="field-content">${personData.mentions || 0}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">Associated Projects</div>
+                                    <div class="field-content">${personData.projects ? personData.projects.join(', ') : 'None'}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">Roles</div>
+                                    <div class="field-content">${personData.roles ? personData.roles.join(', ') : 'None specified'}</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // Load communications with filtering
+        function loadCommunications() {
+            const tbody = document.querySelector('#communicationsTable tbody');
+            const communications = knowledgeBaseData.communications;
+            
+            // Store all communications for filtering
+            allCommunications = communications;
+            filteredCommunications = [...communications];
+
+            // Populate project filter dropdown
+            populateProjectFilter();
+
+            if (!communications || communications.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="error">No communication data available</td></tr>';
+                return;
+            }
+
+            renderCommunications(filteredCommunications.slice(0, 100)); // Show first 100 for performance
+        }
+
+        // Render communications table
+        function renderCommunications(communications) {
+            const tbody = document.querySelector('#communicationsTable tbody');
+            
+            let html = '';
+            communications.forEach((comm, index) => {
+                html += `
+                    <tr onclick="toggleRowExpansion(this, ${JSON.stringify(comm).replace(/"/g, '&quot;')})">
+                        <td>${comm.date || 'N/A'}</td>
+                        <td>${comm.source || 'N/A'}</td>
+                        <td>${comm.line || 'N/A'}</td>
+                        <td><div class="content-preview truncated">${comm.content || ''}</div></td>
+                        <td><div class="content-preview truncated">${comm.projects ? comm.projects.join(', ') : ''}</div></td>
+                        <td><div class="content-preview truncated">${comm.people ? comm.people.join(', ') : ''}</div></td>
+                    </tr>
+                    <tr class="expanded-content-row" style="display: none;">
+                        <td colspan="6">
+                            <div class="expanded-content">
+                                <div class="expanded-field">
+                                    <div class="field-label">Date</div>
+                                    <div class="field-content">${comm.date || 'Not specified'}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">Source</div>
+                                    <div class="field-content">${comm.source || 'Unknown'}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">Line Number</div>
+                                    <div class="field-content">${comm.line || 'N/A'}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">Full Content</div>
+                                    <div class="field-content">${comm.content || 'No content available'}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">Associated Projects</div>
+                                    <div class="field-content">${comm.projects ? comm.projects.join(', ') : 'None'}</div>
+                                </div>
+                                <div class="expanded-field">
+                                    <div class="field-label">People Mentioned</div>
+                                    <div class="field-content">${comm.people ? comm.people.join(', ') : 'None'}</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // Populate project filter dropdown
+        function populateProjectFilter() {
+            const projectFilter = document.getElementById('projectFilter');
+            const projects = new Set();
+            
+            allCommunications.forEach(comm => {
+                if (comm.projects) {
+                    comm.projects.forEach(project => projects.add(project));
+                }
+            });
+
+            let options = '<option value="">All Projects</option>';
+            Array.from(projects).sort().forEach(project => {
+                options += `<option value="${project}">${project}</option>`;
+            });
+            
+            projectFilter.innerHTML = options;
+        }
+
+        // Filter communications
+        function filterCommunications() {
+            const searchTerm = document.getElementById('commSearch').value.toLowerCase();
+            const sourceFilter = document.getElementById('sourceFilter').value;
+            const projectFilter = document.getElementById('projectFilter').value;
+
+            filteredCommunications = allCommunications.filter(comm => {
+                // Search term filter
+                const matchesSearch = !searchTerm || 
+                    (comm.content && comm.content.toLowerCase().includes(searchTerm)) ||
+                    (comm.source && comm.source.toLowerCase().includes(searchTerm)) ||
+                    (comm.projects && comm.projects.some(p => p.toLowerCase().includes(searchTerm))) ||
+                    (comm.people && comm.people.some(p => p.toLowerCase().includes(searchTerm)));
+
+                // Source filter
+                const matchesSource = !sourceFilter || (comm.source && comm.source.toLowerCase().includes(sourceFilter));
+
+                // Project filter
+                const matchesProject = !projectFilter || (comm.projects && comm.projects.includes(projectFilter));
+
+                return matchesSearch && matchesSource && matchesProject;
+            });
+
+            renderCommunications(filteredCommunications.slice(0, 100));
+            updateActiveFilters();
+        }
+
+        // Update active filters display
+        function updateActiveFilters() {
+            const activeFiltersContainer = document.getElementById('activeFilters');
+            const searchTerm = document.getElementById('commSearch').value;
+            const sourceFilter = document.getElementById('sourceFilter').value;
+            const projectFilter = document.getElementById('projectFilter').value;
+
+            let html = '';
+            if (searchTerm) html += `<span class="filter-tag">Search: ${searchTerm}</span>`;
+            if (sourceFilter) html += `<span class="filter-tag">Source: ${sourceFilter}</span>`;
+            if (projectFilter) html += `<span class="filter-tag">Project: ${projectFilter}</span>`;
+            
+            if (html) {
+                html = `<div style="margin-bottom: 5px; font-size: 0.9em; color: #666;">Active Filters:</div>` + html;
+            }
+            
+            activeFiltersContainer.innerHTML = html;
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('commSearch').value = '';
+            document.getElementById('sourceFilter').value = '';
+            document.getElementById('projectFilter').value = '';
+            filterCommunications();
+        }
+
+        // Toggle project details
+        function toggleProject(projectId) {
+            const details = document.getElementById(`details-${projectId}`);
+            const icon = document.getElementById(`icon-${projectId}`);
+            
+            if (details.classList.contains('show')) {
+                details.classList.remove('show');
+                icon.classList.remove('expanded');
+            } else {
+                details.classList.add('show');
+                icon.classList.add('expanded');
+            }
+        }
+
+        // Toggle row expansion for detailed content view
+        function toggleRowExpansion(row, data) {
+            const expandedRow = row.nextElementSibling;
+            
+            if (expandedRow && expandedRow.classList.contains('expanded-content-row')) {
+                if (expandedRow.style.display === 'none') {
+                    expandedRow.style.display = 'table-row';
+                    row.classList.add('row-expanded');
+                } else {
+                    expandedRow.style.display = 'none';
+                    row.classList.remove('row-expanded');
+                }
+            }
+        }
+
+        // Main tab switching
+        function showMainTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.main-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to selected tab
+            event.target.classList.add('active');
+        }
+
+        // Chat functionality
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            // Add user message
+            messagesContainer.innerHTML += `
+                <div class="message user">${message}</div>
+            `;
+            
+            // Clear input
+            input.value = '';
+            
+            // Add loading indicator
+            messagesContainer.innerHTML += `
+                <div class="message assistant" id="loading-message">Thinking...</div>
+            `;
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Process the query
+            setTimeout(() => {
+                const response = processQuery(message);
+                document.getElementById('loading-message').remove();
+                messagesContainer.innerHTML += `
+                    <div class="message assistant">${response}</div>
+                `;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+
+        function processQuery(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            if (!knowledgeBaseData) {
+                return "I don't have access to the knowledge base right now.";
+            }
+
+            // Project count queries
+            if (lowerQuery.includes('how many projects') || lowerQuery.includes('project count')) {
+                const projectCount = Object.keys(knowledgeBaseData.projectGroups).length;
+                return `I'm tracking ${projectCount} project groups: ${Object.keys(knowledgeBaseData.projectGroups).join(', ')}.`;
+            }
+            
+            // RLHF queries
+            if (lowerQuery.includes('rlhf')) {
+                const rlhfProject = knowledgeBaseData.projectGroups['RLHF Projects'];
+                if (rlhfProject) {
+                    return `RLHF Projects include ${rlhfProject.variants.length} variants: ${rlhfProject.variants.join(', ')}. There are ${rlhfProject.totalMentions} total mentions across communications.`;
+                }
+                return "I found RLHF-related projects in the data.";
+            }
+            
+            // People queries
+            if (lowerQuery.includes('who') || lowerQuery.includes('team')) {
+                const peopleCount = Object.keys(knowledgeBaseData.people).length;
+                const peopleList = Object.keys(knowledgeBaseData.people).slice(0, 5).join(', ');
+                return `I've identified ${peopleCount} team members including: ${peopleList}${peopleCount > 5 ? ' and others' : ''}.`;
+            }
+            
+            // Communications queries
+            if (lowerQuery.includes('communication') || lowerQuery.includes('message')) {
+                return `I've processed ${knowledgeBaseData.communications.length} communications from various sources. You can filter them by source, project, or search for specific content in the Communications tab.`;
+            }
+            
+            // Default response
+            return `I understand you're asking about "${query}". I have access to project data, communications, team information, and system configuration. Try asking more specific questions about projects, team members, or communication patterns.`;
+        }
+    </script>
+</body>
+</html>
