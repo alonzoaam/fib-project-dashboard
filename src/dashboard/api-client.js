@@ -3,7 +3,7 @@
 
 class KnowledgeBaseClient {
   constructor(options = {}) {
-    this.baseUrl = options.baseUrl || 'https://fibonacci-dashboard.vercel.app/api';
+    this.baseUrl = options.baseUrl || 'https://fib-project-dashboard.vercel.app/api';
     this.cache = new Map();
     this.version = null;
     this.retryAttempts = options.retryAttempts || 3;
@@ -325,7 +325,7 @@ if (typeof module !== 'undefined' && module.exports) {
 // Example usage:
 /*
 const client = new KnowledgeBaseClient({
-  baseUrl: 'https://fibonacci-dashboard.vercel.app/api'
+  baseUrl: 'https://fib-project-dashboard.vercel.app/api'
 });
 
 // Load full knowledge base
