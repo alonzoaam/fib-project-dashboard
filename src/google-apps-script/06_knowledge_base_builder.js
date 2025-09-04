@@ -833,7 +833,7 @@ class GoogleAppsScriptKnowledgeBuilder {
   }
   
   // NEW: Publish knowledge base to cloud API endpoints
-  async publishToCloudAPI(knowledgeBase) {
+  publishToCloudAPI(knowledgeBase) {
     try {
       console.log('☁️ Publishing knowledge base to cloud API...');
       
@@ -863,27 +863,31 @@ class GoogleAppsScriptKnowledgeBuilder {
       // API endpoints to publish to
       const endpoints = [
         {
-          url: CONFIG.API_ENDPOINTS?.PRIMARY || 'https://fibonacci-dashboard.vercel.app/api/knowledge-base',
+          url: CONFIG.API_ENDPOINTS?.PRIMARY || 'https://fib-project-dashboard.vercel.app/api/knowledge-base',
           name: 'Primary API'
-        },
-        {
-          url: CONFIG.API_ENDPOINTS?.BACKUP || 'https://script.google.com/macros/s/SCRIPT_ID/exec',
-          name: 'Backup API'
         }
       ];
+      
+      // Only add backup API if it's properly configured
+      if (CONFIG.API_ENDPOINTS?.BACKUP && !CONFIG.API_ENDPOINTS.BACKUP.includes('SCRIPT_ID')) {
+        endpoints.push({
+          url: CONFIG.API_ENDPOINTS.BACKUP,
+          name: 'Backup API'
+        });
+      }
       
       const publishResults = [];
       
       for (const endpoint of endpoints) {
         try {
-          const result = await this.publishToEndpoint(endpoint.url, serializedKB);
+          const result = this.publishToEndpoint(endpoint.url, serializedKB);
           publishResults.push({
             endpoint: endpoint.name,
             success: true,
             url: endpoint.url,
             response: result
           });
-          console.log(`✅ Successfully published to ${endpoint.name}`);
+          console.log(`✅ Successfully published to ${endpoint.name}: ${endpoint.url}`);
         } catch (error) {
           publishResults.push({
             endpoint: endpoint.name,
@@ -891,7 +895,7 @@ class GoogleAppsScriptKnowledgeBuilder {
             url: endpoint.url,
             error: error.message
           });
-          console.error(`❌ Failed to publish to ${endpoint.name}:`, error.message);
+          console.error(`❌ Failed to publish to ${endpoint.name}: ${error.message}`);
         }
       }
       
@@ -900,20 +904,25 @@ class GoogleAppsScriptKnowledgeBuilder {
       console.log(`📊 Published to ${successCount}/${endpoints.length} endpoints successfully`);
       
       if (successCount === 0) {
-        throw new Error('Failed to publish to any API endpoints');
+        console.warn('⚠️ Warning: Failed to publish to any API endpoints, but continuing...');
+        console.log('💡 The knowledge base is still available in Google Sheets');
+        return 'https://fib-project-dashboard.vercel.app'; // Return default URL
       }
       
       // Return the primary endpoint URL for dashboard access
       return endpoints[0].url.replace('/api/knowledge-base', '');
       
     } catch (error) {
-      console.error('❌ Error publishing to cloud API:', error);
-      throw error;
+      console.error('❌ Error publishing to cloud API:', error.message);
+      console.log('💡 Continuing without API publishing - knowledge base available in Google Sheets');
+      return 'https://fib-project-dashboard.vercel.app'; // Don't throw, just return default
     }
   }
   
   // Helper: Publish to a specific endpoint
-  async publishToEndpoint(url, data) {
+  publishToEndpoint(url, data) {
+    console.log(`🌐 Attempting to publish to: ${url}`);
+    
     const payload = {
       data: data,
       timestamp: new Date().toISOString(),
@@ -922,23 +931,36 @@ class GoogleAppsScriptKnowledgeBuilder {
     };
     
     const options = {
-      method: 'PUT',
+      method: 'POST', // Changed from PUT to POST - more common for APIs
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + (CONFIG.API_SECRET_KEY || 'default-key'),
-        'User-Agent': 'GoogleAppsScript/KnowledgeBaseBuilder'
+        'Authorization': 'Bearer ' + (CONFIG.API_SECRET_KEY || 'fibonacci-secret-2025')
       },
-      payload: JSON.stringify(payload)
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true // This prevents throwing errors on non-200 responses
     };
     
-    const response = UrlFetchApp.fetch(url, options);
-    const responseCode = response.getResponseCode();
-    const responseText = response.getContentText();
-    
-    if (responseCode >= 200 && responseCode < 300) {
-      return JSON.parse(responseText);
-    } else {
-      throw new Error(`HTTP ${responseCode}: ${responseText}`);
+    try {
+      const response = UrlFetchApp.fetch(url, options);
+      const responseCode = response.getResponseCode();
+      const responseText = response.getContentText();
+      
+      console.log(`📡 Response from ${url}: ${responseCode}`);
+      console.log(`📄 Response body preview: ${responseText.substring(0, 200)}...`);
+      
+      if (responseCode >= 200 && responseCode < 300) {
+        try {
+          return JSON.parse(responseText);
+        } catch (parseError) {
+          console.log(`⚠️ Response not JSON, returning raw text: ${responseText}`);
+          return { success: true, raw: responseText };
+        }
+      } else {
+        throw new Error(`HTTP ${responseCode}: ${responseText}`);
+      }
+    } catch (fetchError) {
+      console.error(`❌ Network error publishing to ${url}:`, fetchError.message);
+      throw new Error(`Network error: ${fetchError.message}`);
     }
   }
   
@@ -1258,6 +1280,7 @@ function buildAndUploadKnowledgeBase() {
     }
     
     console.log('🎉 Knowledge base building and upload completed successfully!');
+    const dashboardUrl = CONFIG.API_ENDPOINTS?.PRIMARY || 'https://fib-project-dashboard.vercel.app';
     console.log('🌐 Dashboard available at:', dashboardUrl);
     return knowledgeBase;
     

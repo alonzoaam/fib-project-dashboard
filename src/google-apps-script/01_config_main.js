@@ -11,7 +11,7 @@ const CONFIG = {
   // API Configuration for cloud deployment
   API_ENDPOINTS: {
     PRIMARY: 'https://fib-project-dashboard.vercel.app/api/knowledge-base',
-    BACKUP: 'https://script.google.com/macros/s/prj_Zk0kK8EcpAAfJ1YHym5dnLWfbPTD/exec'
+    BACKUP: 'https://script.google.com/macros/s/AKfycbx34Vdi8aNlVHba5G5Lt3Olxp9Wo4e7iQyFUGQcPaWoYGJFk2EKRq3-_CA9GArvFzg7/exec'
   },
   API_SECRET_KEY: 'fibonacci-secret-2025', // Change this in production
   ENABLE_DRIVE_BACKUP: false, // Set to true if you want to keep drive backups
